@@ -16,12 +16,15 @@
 
 package com.google.cloud.tools.jib.image.json;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.cloud.tools.jib.json.JsonTemplate;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
@@ -71,6 +74,16 @@ public class V22ManifestListTemplate implements ManifestTemplate {
 
   private final int schemaVersion = SCHEMA_VERSION;
   private final String mediaType = MANIFEST_MEDIA_TYPE;
+
+  @JsonCreator
+  public V22ManifestListTemplate(@JsonProperty("mediaType") String mediaType, @JsonProperty("schemaVersion") Integer schemaVersion, @JsonProperty("manifests") List<ManifestDescriptorTemplate> manifests) {
+    Preconditions.checkArgument(Objects.equals(mediaType, MANIFEST_MEDIA_TYPE), "mediaType " + mediaType + " does not equal " + MANIFEST_MEDIA_TYPE);
+    Preconditions.checkArgument(Objects.equals(schemaVersion, SCHEMA_VERSION), "schemaVersion " + schemaVersion + " does not equal " + SCHEMA_VERSION);
+    this.manifests = manifests;
+  }
+
+  public V22ManifestListTemplate() {
+  }
 
   @Override
   public int getSchemaVersion() {
@@ -126,8 +139,14 @@ public class V22ManifestListTemplate implements ManifestTemplate {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Platform implements JsonTemplate {
-      @Nullable private String architecture;
-      @Nullable private String os;
+      @Nullable private final String architecture;
+      @Nullable private final String os;
+
+      @JsonCreator
+      public Platform(@JsonProperty("architecture") String architecture, @JsonProperty("os") String os) {
+        this.architecture = architecture;
+        this.os = os;
+      }
 
       @Nullable
       public String getArchitecture() {
@@ -177,9 +196,7 @@ public class V22ManifestListTemplate implements ManifestTemplate {
      * @param os the manifest os
      */
     public void setPlatform(String architecture, String os) {
-      platform = new Platform();
-      platform.architecture = architecture;
-      platform.os = os;
+      platform = new Platform(architecture, os);
     }
 
     @Nullable
