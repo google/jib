@@ -67,7 +67,7 @@ subprojects {
     GRADLE_EXTENSION: 'com.google.cloud.tools:jib-gradle-plugin-extension-api:0.4.0',
     MAVEN_EXTENSION: 'com.google.cloud.tools:jib-maven-plugin-extension-api:0.4.0',
 
-    COMMONS_COMPRESS: 'org.apache.commons:commons-compress:1.20',
+    COMMONS_COMPRESS: 'org.apache.commons:commons-compress:1.21',
     COMMONS_TEXT: 'org.apache.commons:commons-text:1.9',
     JACKSON_DATABIND: 'com.fasterxml.jackson.core:jackson-databind:2.12.4',
     JACKSON_DATAFORMAT_YAML: 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.12.4',
